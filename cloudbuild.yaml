@@ -1,0 +1,10 @@
+steps:
+- name: 'gcr.io/cloud-builders/docker'
+  args: [ 'build', '-t', 'gcr.io/translatenav/github.com/radbrt/shiny_cicd:$COMMIT_SHA', '.' ]
+- name: 'gcr.io/cloud-builders/docker'
+  args: [ 'build', '-t', 'gcr.io/translatenav/github.com/radbrt/shiny_cicd:latest', '.' ]
+images:
+- 'gcr.io/translatenav/github.com/radbrt/shiny_cicd:$COMMIT_SHA'
+- 'gcr.io/translatenav/github.com/radbrt/shiny_cicd:latest'
+tags:
+- "cloudbuild"
