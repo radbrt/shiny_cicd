@@ -9,7 +9,7 @@ steps:
 - name: 'gcr.io/cloud-builders/gke-deploy'
   args:
   - run
-  - --image=gcr.io/[PROJECT-ID]/shiny_cicid:$COMMIT_SHA'
-  - --location=[LOCATION]
-  - --cluster=[CLUSTER]'
+  - --image='gcr.io/translatenav/github.com/radbrt/shiny_cicd:$COMMIT_SHA'
+  - --location='europe-north1-a'
+  - --cluster='shinyhampster'
   
