@@ -6,7 +6,7 @@ spec:
   selector:
     matchLabels:
       app: shinyweb
-  replicas: 1
+  replicas: 3
   template: # template for the pods
     metadata:
       labels:
@@ -15,7 +15,16 @@ spec:
       containers:
       - name: shiny
         image: gcr.io/translatenav/github.com/radbrt/shiny_cicd:latest
-        imagePullPolicy: Always
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  minReadySeconds: 5
+  template:
+    metadata:
+      labels:
+        service: shinyweb
 
 ---
 kind: Service
