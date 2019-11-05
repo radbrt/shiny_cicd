@@ -4,8 +4,6 @@ steps:
   images:
     - 'gcr.io/translatenav/github.com/radbrt/shiny_cicd:$COMMIT_SHA'
     - 'gcr.io/translatenav/github.com/radbrt/shiny_cicd:latest'
-  tags:
-    - "cloudbuild"
 - name: 'gcr.io/cloud-builders/gke-deploy'
   args:
   - run
