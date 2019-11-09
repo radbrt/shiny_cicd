@@ -15,6 +15,7 @@ spec:
       containers:
       - name: shiny
         image: gcr.io/translatenav/github.com/radbrt/shiny_cicd:latest
+        imagePullPolicy: "Always"
   strategy:
     type: RollingUpdate
     rollingUpdate:
