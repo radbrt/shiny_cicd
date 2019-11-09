@@ -1,28 +1,28 @@
-#
-# This is a Shiny web application. You can run the application by clicking
-# the 'Run App' button above.
-#
-# Find out more about building applications with Shiny here:
-#
-#    http://shiny.rstudio.com/
-#
 
 library(shiny)
+library(dplyr)
+library(ggplot2)
+
+load('data/data.Rdata')
+
+kjonnlist <- unique(df$kjonn)
+fullforingslist <- unique(df$fullforingsgrad)
+studretnlist <- unique(df$studieretning_utdanningsprogram)
+
 
 # Define UI for application that draws a histogram
 ui <- fluidPage(
 
     # Application title
-    titlePanel("Continually Faithful Geyser Data"),
+    titlePanel("Gjennomføring i videregående skole"),
 
     # Sidebar with a slider input for number of bins 
     sidebarLayout(
         sidebarPanel(
-            sliderInput("bins",
-                        "Number of bins:",
-                        min = 1,
-                        max = 50,
-                        value = 30)
+            checkboxInput("pct", "Show percent"),
+            selectInput("kjonnselect", "Kjønn", kjonnlist),
+            selectInput("fullfselect", "Fullføringsgrad", fullforingslist),
+            selectInput("studretnselect", "Studieretning", studretnlist)
         ),
 
         # Show a plot of the generated distribution
@@ -35,13 +35,25 @@ ui <- fluidPage(
 # Define server logic required to draw a histogram
 server <- function(input, output) {
 
-    output$distPlot <- renderPlot({
-        # generate bins based on input$bins from ui.R
-        x    <- faithful[, 2]
-        bins <- seq(min(x), max(x), length.out = input$bins + 1)
 
-        # draw the histogram with the specified number of bins
-        hist(x, breaks = bins, col = 'blue', border = 'white')
+    output$distPlot <- renderPlot({
+        if (input$pct==TRUE) {
+            value <- quo(andel_elever_prosent)
+            y_axis_text <- "Andel elver (Prosent)"
+        } else {
+            value <- quo(elever)
+            y_axis_text <- "Antall elever"
+        }
+        
+        df %>% 
+            filter(kjonn == input$kjonnselect & 
+                       fullforingsgrad==input$fullfselect & 
+                       studieretning_utdanningsprogram==input$studretnselect) %>% 
+            ggplot(aes(intervall_ar, !!value, group=foreldrenes_utdanningsniva, color=foreldrenes_utdanningsniva)) +
+            geom_line() +
+            xlab("Kull") +
+            ylab(y_axis_text) +
+            theme(axis.text.x = element_text(angle = 45, hjust = 1))
     })
 }
 
