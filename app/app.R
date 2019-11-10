@@ -2,8 +2,10 @@
 library(shiny)
 library(dplyr)
 library(ggplot2)
+#library(readr)
 
-load('data/data.Rdata')
+#save(df, file="./app/data/df.Rdata", version = 2)
+load('data/df.Rdata')
 
 kjonnlist <- unique(df$kjonn)
 fullforingslist <- unique(df$fullforingsgrad)

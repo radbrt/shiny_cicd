@@ -3,7 +3,9 @@ FROM rocker/shiny
 ADD app /srv/shiny-server/
 
 RUN install2.r --error \
-    jsonlite 
+    jsonlite \
+    dplyr \
+    ggplot2
 
 EXPOSE 3838
 
