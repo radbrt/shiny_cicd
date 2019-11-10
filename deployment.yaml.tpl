@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: shiny
-        image: gcr.io/translatenav/github.com/radbrt/shiny_cicd:latest
+        image: gcr.io/GOOGLE_CLOUD_PROJECT/github.com/radbrt/shiny_cicd:SHORT_SHA
         imagePullPolicy: "Always"
   strategy:
     type: RollingUpdate
