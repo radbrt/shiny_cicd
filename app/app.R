@@ -12,29 +12,25 @@ fullforingslist <- unique(df$fullforingsgrad)
 studretnlist <- unique(df$studieretning_utdanningsprogram)
 
 
-# Define UI for application that draws a histogram
+# UI
 ui <- fluidPage(
 
     # Application title
     titlePanel("Gjennomføring i videregående skole"),
 
-    # Sidebar with a slider input for number of bins 
-    sidebarLayout(
-        sidebarPanel(
-            checkboxInput("pct", "Show percent"),
-            selectInput("kjonnselect", "Kjønn", kjonnlist),
-            selectInput("fullfselect", "Fullføringsgrad", fullforingslist),
-            selectInput("studretnselect", "Studieretning", studretnlist)
-        ),
-
-        # Show a plot of the generated distribution
-        mainPanel(
-           plotOutput("distPlot")
-        )
+    tabsetPanel(
+        tabPanel("Plot", plotOutput("distPlot"), checkboxInput("pct", "Vis prosent")), 
+        tabPanel("Table", tableOutput("table"))
+    ),
+    hr(),
+    fluidRow(
+        column(3, selectInput("kjonnselect", "Kjønn", kjonnlist, width = "100%")),
+        column(3, selectInput("fullfselect", "Fullføringsgrad", fullforingslist, width = "100%")),
+        column(6, selectInput("studretnselect", "Studieretning", studretnlist, width = "100%"))
     )
 )
 
-# Define server logic required to draw a histogram
+# SERVER
 server <- function(input, output) {
 
 
@@ -52,11 +48,19 @@ server <- function(input, output) {
                        fullforingsgrad==input$fullfselect & 
                        studieretning_utdanningsprogram==input$studretnselect) %>% 
             ggplot(aes(intervall_ar, !!value, group=foreldrenes_utdanningsniva, color=foreldrenes_utdanningsniva)) +
-            geom_line() +
+            geom_line(size=1) +
             xlab("Kull") +
             ylab(y_axis_text) +
-            theme(axis.text.x = element_text(angle = 45, hjust = 1))
+            theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+            scale_color_discrete(name = "Foreldrenes utdanning")
     })
+    
+    output$table <- renderTable(
+        df %>% 
+            filter(kjonn == input$kjonnselect & 
+                       fullforingsgrad==input$fullfselect & 
+                       studieretning_utdanningsprogram==input$studretnselect) 
+    )
 }
 
 
