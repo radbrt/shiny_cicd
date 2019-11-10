@@ -11,8 +11,9 @@ steps:
     - 'CLOUDSDK_CONTAINER_CLUSTER=shinyhampster'
     - 'PROJECT_ID=$PROJECT_ID'
     - 'SHORT_SHA=$SHORT_SHA'
-  images:
-    - 'gcr.io/$PROJECT_ID/github.com/radbrt/shiny_cicd:$SHORT_SHA'
-    - 'gcr.io/$PROJECT_ID/github.com/radbrt/shiny_cicd:latest'
-  tags:
-    - "cloudbuild"
+
+images:
+  - 'gcr.io/$PROJECT_ID/github.com/radbrt/shiny_cicd:$SHORT_SHA'
+  - 'gcr.io/$PROJECT_ID/github.com/radbrt/shiny_cicd:latest'
+tags:
+  - "cloudbuild"
