@@ -3,10 +3,10 @@ steps:
   args: [ 'build', '-t', 'gcr.io/$PROJECT_ID/github.com/radbrt/shiny_cicd:$SHORT_SHA', '-t', 'gcr.io/$PROJECT_ID/github.com/radbrt/shiny_cicd:latest', '.' ]
 
   # Deploy
-  - name: 'gcr.io/cloud-builders/kubectl'
-    id: Deploy
-    args: ['set', 'image', 'deployment/shinyweb', 'shiny=gcr.io/$PROJECT_ID/github.com/radbrt/shiny_cicd:$SHORT_SHA']
-    env:
+- name: 'gcr.io/cloud-builders/kubectl'
+  id: Deploy
+  args: ['set', 'image', 'deployment/shinyweb', 'shiny=gcr.io/$PROJECT_ID/github.com/radbrt/shiny_cicd:$SHORT_SHA']
+  env:
     - 'CLOUDSDK_COMPUTE_ZONE=europe-north1-a'
     - 'CLOUDSDK_CONTAINER_CLUSTER=shinyhampster'
     - 'PROJECT_ID=$PROJECT_ID'
@@ -15,4 +15,4 @@ steps:
     - 'gcr.io/$PROJECT_ID/github.com/radbrt/shiny_cicd:$SHORT_SHA'
     - 'gcr.io/$PROJECT_ID/github.com/radbrt/shiny_cicd:latest'
   tags:
-    - "cloudbuild"'
+    - "cloudbuild"
