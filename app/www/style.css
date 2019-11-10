@@ -1,0 +1,55 @@
+body {
+	background-color: #202331;
+}
+
+
+h1, h2, h3 {
+	color: #c3d3c3;
+}
+
+select {
+	color: #c3d3c3;
+	background-color : #202331; 
+
+}
+
+.navbar-nav li a:hover, .navbar-nav > .active > a {
+color: #c3d3c3 !important;
+
+background-color:#202331 !important;
+background-image: none !important;
+
+}
+
+.selectize-control {
+	background-color: #202331;
+}
+
+li.active {
+	background-color: #202331;
+}
+
+label {
+	color: #c3d3c3;
+}
+
+.selectize-input.full {
+	color: #c3d3c3;
+	background-color : #202331; 
+}
+
+.selectize-dropdown {
+	color: #c3d3c3;
+	background-color : #202331; 
+}
+
+.selectize-control {
+	color: #c3d3c3; 	
+	background-color : #202331; 
+}
+
+.selectize-input .input-active .focus .dropdown-active .selectize-control.single {
+	color: #c3d3c3; 	
+	background-color : #202331; 
+
+}
