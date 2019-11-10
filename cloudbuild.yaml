@@ -1,36 +1,18 @@
 steps:
 - name: 'gcr.io/cloud-builders/docker'
-  args: [ 'build', '-t', 'gcr.io/translatenav/github.com/radbrt/shiny_cicd:$SHORT_SHA', '-t', 'gcr.io/translatenav/github.com/radbrt/shiny_cicd:latest', '.' ]
+  args: [ 'build', '-t', 'gcr.io/$PROJECT_ID/github.com/radbrt/shiny_cicd:$SHORT_SHA', '-t', 'gcr.io/$PROJECT_ID/github.com/radbrt/shiny_cicd:latest', '.' ]
 
-# Insert short sha image tag
-- name: 'gcr.io/cloud-builders/gsutil'
-  id: Buildsha
-  args:
-  - '-c'
-  - |
-     sed "s/GOOGLE_CLOUD_PROJECT/${PROJECT_ID}/g" kubernetes.yaml.tpl | \
-     sed "s/SHORT_SHA/${SHORT_SHA}/g" > deployment.yaml
-  env:
-  - 'CLOUDSDK_COMPUTE_ZONE=europe-north1-a'
-  - 'CLOUDSDK_CONTAINER_CLUSTER=shinyhampster'
-  - 'PROJECT_ID=$PROJECT_ID'
-  - 'SHORT_SHA=$SHORT_SHA'
-
-# Deploy
-- name: 'gcr.io/cloud-builders/kubectl'
-  id: Deploy
-  args:
-  - 'apply'
-  - '-f'
-  - 'deployment.yaml'
-  env:
-  - 'CLOUDSDK_COMPUTE_ZONE=europe-north1-a'
-  - 'CLOUDSDK_CONTAINER_CLUSTER=shinyhampster'
-  - 'PROJECT_ID=$PROJECT_ID'
-  - 'SHORT_SHA=$SHORT_SHA'
-  
-images:
-  - 'gcr.io/translatenav/github.com/radbrt/shiny_cicd:$SHORT_SHA'
-  - 'gcr.io/translatenav/github.com/radbrt/shiny_cicd:latest'
-tags:
-  - "cloudbuild"
+  # Deploy
+  - name: 'gcr.io/cloud-builders/kubectl'
+    id: Deploy
+    args: ['set', 'image', 'deployment/shinyweb', 'shiny=gcr.io/$PROJECT_ID/github.com/radbrt/shiny_cicd:$SHORT_SHA']
+    env:
+    - 'CLOUDSDK_COMPUTE_ZONE=europe-north1-a'
+    - 'CLOUDSDK_CONTAINER_CLUSTER=shinyhampster'
+    - 'PROJECT_ID=$PROJECT_ID'
+    - 'SHORT_SHA=$SHORT_SHA'
+  images:
+    - 'gcr.io/$PROJECT_ID/github.com/radbrt/shiny_cicd:$SHORT_SHA'
+    - 'gcr.io/$PROJECT_ID/github.com/radbrt/shiny_cicd:latest'
+  tags:
+    - "cloudbuild"'
